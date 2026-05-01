@@ -1,38 +1,8 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { useLanguage } from '../i18n/LanguageContext';
 
 export default function HeroSection() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { t } = useLanguage();
-
-  // Subtle dot-grid canvas
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      draw();
-    };
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const spacing = 32;
-      for (let x = 0; x < canvas.width; x += spacing) {
-        for (let y = 0; y < canvas.height; y += spacing) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1.2, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(0,0,0,0.07)";
-          ctx.fill();
-        }
-      }
-    };
-    resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
-  }, []);
 
   return (
     <>
@@ -40,417 +10,503 @@ export default function HeroSection() {
         .hero {
           min-height: 100vh;
           display: flex;
+          flex-direction: column;
           align-items: center;
+          justify-content: center;
           position: relative;
           overflow: hidden;
-          padding: 120px 40px 80px;
-          background: var(--white);
+          padding: 140px 24px 80px;
+          background: var(--background);
         }
-        .hero-canvas {
+        
+        /* Subtle grid background */
+        .hero::before {
+          content: '';
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          opacity: 0.6;
+          background-image: 
+            linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+          background-size: 60px 60px;
+          mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
+          -webkit-mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black 70%, transparent 100%);
         }
-        .hero-green-band {
+        
+        /* Gradient orb */
+        .hero-orb {
           position: absolute;
-          top: 0; right: 0;
-          width: 40%;
-          height: 100%;
-          background: linear-gradient(135deg, transparent 0%, var(--green-pale) 100%);
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 800px;
+          height: 600px;
+          background: radial-gradient(ellipse at center, var(--primary-pale) 0%, transparent 60%);
           pointer-events: none;
+          opacity: 0.8;
         }
-        .hero-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          width: 100%;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
+        
+        .hero-content {
+          max-width: 900px;
+          text-align: center;
           position: relative;
           z-index: 1;
         }
-        .hero-eyebrow {
+        
+        .hero-badge {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          border: 1px solid var(--gray-200);
+          gap: 10px;
           background: var(--white);
-          border-radius: 100px;
-          padding: 5px 14px 5px 8px;
-          font-size: 12px;
+          border: 1px solid var(--border);
+          border-radius: var(--radius-full);
+          padding: 6px 6px 6px 16px;
+          font-size: 13px;
           font-weight: 500;
-          color: var(--gray-600);
-          margin-bottom: 28px;
+          color: var(--muted-foreground);
+          margin-bottom: 32px;
           box-shadow: var(--shadow-sm);
+          animation: fadeUp 0.6s ease forwards;
         }
-        .eyebrow-badge {
-          background: var(--black);
+        
+        .badge-new {
+          background: var(--foreground);
           color: var(--white);
-          border-radius: 100px;
-          padding: 2px 10px;
+          border-radius: var(--radius-full);
+          padding: 4px 12px;
           font-size: 11px;
           font-weight: 600;
-          letter-spacing: 0.3px;
+          letter-spacing: 0.5px;
         }
+        
         .hero-title {
-          font-family: var(--font-display);
-          font-size: clamp(52px, 7vw, 96px);
-          font-weight: 400;
-          line-height: 0.95;
-          letter-spacing: -3px;
-          color: var(--black);
+          font-family: var(--font-sans);
+          font-size: clamp(48px, 8vw, 80px);
+          font-weight: 700;
+          line-height: 1.05;
+          letter-spacing: -2px;
+          color: var(--foreground);
           margin-bottom: 24px;
+          animation: fadeUp 0.6s ease 0.1s forwards;
+          opacity: 0;
         }
-        .hero-title em {
-          font-style: italic;
-          color: var(--green);
-        }
-        .hero-title strong {
-          font-style: normal;
-          font-weight: 400;
+        
+        .hero-title .highlight {
+          color: var(--primary);
           position: relative;
-          display: inline-block;
         }
-        .hero-title strong::after {
-          content: '';
-          position: absolute;
-          bottom: 4px; left: 0; right: 0;
-          height: 3px;
-          background: var(--green);
-          border-radius: 2px;
-          animation: scan-h 1s ease forwards 0.8s both;
-        }
+        
         .hero-desc {
-          color: var(--gray-500);
+          color: var(--muted-foreground);
           font-size: 18px;
-          line-height: 1.8;
-          max-width: 440px;
-          margin-bottom: 40px;
-          font-weight: 300;
+          line-height: 1.7;
+          max-width: 600px;
+          margin: 0 auto 40px;
+          font-weight: 400;
+          animation: fadeUp 0.6s ease 0.2s forwards;
+          opacity: 0;
         }
+        
         .hero-actions {
           display: flex;
           gap: 12px;
+          justify-content: center;
           flex-wrap: wrap;
+          margin-bottom: 64px;
+          animation: fadeUp 0.6s ease 0.3s forwards;
+          opacity: 0;
         }
+        
         .btn-hero-primary {
-          background: var(--black);
+          background: var(--foreground);
           color: var(--white);
           border: none;
-          border-radius: var(--radius-md);
-          padding: 14px 28px;
-          font-size: 15px;
+          border-radius: var(--radius-lg);
+          padding: 16px 32px;
+          font-size: 16px;
           font-weight: 600;
-          transition: all 0.2s;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        
+        .btn-hero-primary:hover {
+          background: var(--gray-800);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-hero-secondary {
+          background: var(--white);
+          color: var(--foreground);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          padding: 16px 32px;
+          font-size: 16px;
+          font-weight: 500;
+          transition: all 0.2s ease;
           display: flex;
           align-items: center;
           gap: 8px;
         }
-        .btn-hero-primary:hover {
-          background: var(--gray-800);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        }
-        .btn-hero-secondary {
-          background: var(--white);
-          color: var(--black);
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius-md);
-          padding: 14px 28px;
-          font-size: 15px;
-          font-weight: 500;
-          transition: all 0.2s;
-        }
+        
         .btn-hero-secondary:hover {
-          border-color: var(--gray-400);
-          box-shadow: var(--shadow-sm);
+          border-color: var(--gray-300);
+          background: var(--muted);
         }
-        .hero-trust {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          margin-top: 40px;
-          padding-top: 32px;
-          border-top: 1px solid var(--gray-100);
-        }
-        .trust-item {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 13px;
-          color: var(--gray-500);
-        }
-        .trust-icon {
-          width: 20px; height: 20px;
-          background: var(--green-pale);
-          border: 1px solid var(--green-muted);
-          border-radius: 4px;
+        
+        .play-icon {
+          width: 20px;
+          height: 20px;
+          background: var(--primary);
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 11px;
+        }
+        
+        .play-icon::after {
+          content: '';
+          width: 0;
+          height: 0;
+          border-left: 6px solid white;
+          border-top: 4px solid transparent;
+          border-bottom: 4px solid transparent;
+          margin-left: 2px;
         }
 
-        /* Dashboard card */
+        /* Dashboard Preview Card */
+        .dashboard-preview {
+          width: 100%;
+          max-width: 1000px;
+          animation: fadeUp 0.6s ease 0.4s forwards;
+          opacity: 0;
+          perspective: 1000px;
+        }
+        
         .dashboard-card {
           background: var(--white);
-          border: 1px solid var(--gray-200);
-          border-radius: 20px;
-          box-shadow: 0 32px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-2xl);
+          box-shadow: var(--shadow-2xl);
           overflow: hidden;
-          animation: float 6s ease-in-out infinite;
-          position: relative;
+          transform: rotateX(5deg);
+          transform-origin: center top;
+          transition: transform 0.4s ease;
         }
+        
+        .dashboard-card:hover {
+          transform: rotateX(0deg);
+        }
+        
         .dashboard-topbar {
-          background: var(--gray-50);
-          border-bottom: 1px solid var(--gray-200);
+          background: var(--muted);
+          border-bottom: 1px solid var(--border);
           padding: 14px 20px;
           display: flex;
           align-items: center;
           gap: 8px;
         }
+        
         .win-btn {
-          width: 10px; height: 10px;
+          width: 12px; 
+          height: 12px;
           border-radius: 50%;
         }
-        .dashboard-body { padding: 20px; }
+        
+        .dashboard-body {
+          padding: 24px;
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 16px;
+        }
+        
         .dash-header {
+          grid-column: 1 / -1;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 16px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid var(--border-light);
+          margin-bottom: 8px;
         }
+        
         .dash-title {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 600;
-          color: var(--gray-800);
+          color: var(--foreground);
         }
+        
         .dash-sprint {
           font-size: 11px;
           font-family: var(--font-mono);
-          background: var(--green-pale);
-          color: var(--green);
-          border: 1px solid var(--green-muted);
-          border-radius: 4px;
-          padding: 2px 8px;
+          background: var(--primary-pale);
+          color: var(--primary);
+          border: 1px solid var(--primary-muted);
+          border-radius: var(--radius-full);
+          padding: 4px 12px;
           font-weight: 600;
         }
-        .dash-stats {
-          display: grid;
-          grid-template-columns: repeat(3,1fr);
-          gap: 10px;
-          margin-bottom: 16px;
-        }
+        
         .dash-stat {
-          background: var(--gray-50);
-          border: 1px solid var(--gray-100);
-          border-radius: var(--radius-md);
-          padding: 12px;
+          background: var(--muted);
+          border-radius: var(--radius-lg);
+          padding: 16px;
+          transition: all 0.2s ease;
         }
+        
+        .dash-stat:hover {
+          background: var(--gray-100);
+        }
+        
         .dash-stat-val {
-          font-size: 22px;
+          font-size: 28px;
           font-weight: 700;
-          color: var(--black);
-          font-family: var(--font-display);
+          color: var(--foreground);
+          font-family: var(--font-sans);
+          letter-spacing: -1px;
         }
+        
         .dash-stat-lbl {
-          font-size: 10px;
-          color: var(--gray-400);
-          margin-top: 2px;
+          font-size: 11px;
+          color: var(--muted-foreground);
+          margin-top: 4px;
           font-family: var(--font-mono);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
-        .kanban-mini {
+        
+        .kanban-preview {
+          grid-column: 1 / -1;
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 8px;
-          margin-bottom: 12px;
+          gap: 12px;
+          margin-top: 8px;
         }
-        .kanban-col-mini {
-          border-radius: var(--radius-sm);
-          padding: 8px;
+        
+        .kanban-col {
+          border-radius: var(--radius-lg);
+          padding: 12px;
         }
+        
         .kanban-col-label {
-          font-size: 9px;
+          font-size: 10px;
           font-weight: 700;
           letter-spacing: 1px;
-          margin-bottom: 6px;
+          text-transform: uppercase;
+          margin-bottom: 10px;
           font-family: var(--font-mono);
         }
-        .kanban-ticket-mini {
+        
+        .kanban-ticket {
           background: var(--white);
-          border: 1px solid var(--gray-200);
-          border-radius: 5px;
-          padding: 6px 8px;
-          font-size: 10px;
-          color: var(--gray-700);
-          margin-bottom: 4px;
-        }
-        .ai-result-bar {
-          background: linear-gradient(135deg, var(--green-pale), #ecfdf5);
-          border: 1px solid var(--green-muted);
+          border: 1px solid var(--border);
           border-radius: var(--radius-md);
-          padding: 12px 14px;
+          padding: 10px 12px;
+          font-size: 12px;
+          color: var(--foreground);
+          margin-bottom: 8px;
+          font-weight: 500;
+          box-shadow: var(--shadow-xs);
+        }
+        
+        .ai-bar {
+          grid-column: 1 / -1;
+          background: linear-gradient(135deg, var(--primary-pale), rgba(13,148,136,0.08));
+          border: 1px solid var(--primary-muted);
+          border-radius: var(--radius-lg);
+          padding: 14px 18px;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 14px;
+          margin-top: 8px;
         }
+        
         .ai-icon {
-          width: 28px; height: 28px;
-          background: var(--green);
-          border-radius: 7px;
+          width: 36px; 
+          height: 36px;
+          background: var(--primary);
+          border-radius: var(--radius-md);
           display: flex;
           align-items: center;
           justify-content: center;
           color: white;
-          font-size: 13px;
+          font-size: 16px;
           flex-shrink: 0;
         }
-        .ai-label { font-size: 12px; font-weight: 600; color: var(--gray-800); }
-        .ai-sub { font-size: 10px; color: var(--gray-400); margin-top: 1px; }
+        
+        .ai-text {
+          flex: 1;
+        }
+        
+        .ai-label { 
+          font-size: 13px; 
+          font-weight: 600; 
+          color: var(--foreground); 
+        }
+        
+        .ai-sub { 
+          font-size: 11px; 
+          color: var(--muted-foreground); 
+          margin-top: 2px; 
+        }
+        
         .ai-confirm {
-          margin-left: auto;
-          background: var(--green);
+          background: var(--primary);
           color: white;
           border: none;
-          border-radius: 5px;
-          padding: 4px 10px;
-          font-size: 10px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-
-        /* Floating badges */
-        .float-badge {
-          position: absolute;
-          background: var(--white);
-          border: 1px solid var(--gray-200);
           border-radius: var(--radius-md);
-          padding: 8px 14px;
+          padding: 8px 16px;
           font-size: 12px;
           font-weight: 600;
-          box-shadow: var(--shadow-md);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        
+        .ai-confirm:hover {
+          background: var(--primary-light);
+        }
+
+        /* Floating elements */
+        .floating-badge {
+          position: absolute;
+          background: var(--white);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          padding: 10px 16px;
+          font-size: 13px;
+          font-weight: 600;
+          box-shadow: var(--shadow-lg);
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           white-space: nowrap;
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-badge.top-right {
+          top: -20px;
+          right: -20px;
+          color: var(--primary);
+          border-color: var(--primary-muted);
+          background: var(--primary-pale);
+        }
+        
+        .floating-badge.bottom-left {
+          bottom: -20px;
+          left: -20px;
+          animation-delay: 1s;
+        }
+        
+        @media (max-width: 768px) {
+          .hero { padding: 120px 20px 60px; }
+          .hero-title { letter-spacing: -1px; }
+          .dashboard-body { grid-template-columns: 1fr; padding: 16px; }
+          .kanban-preview { grid-template-columns: 1fr; }
+          .floating-badge { display: none; }
+          .dashboard-card { transform: none; }
         }
       `}</style>
 
       <section className="hero">
-        <canvas ref={canvasRef} className="hero-canvas" />
-        <div className="hero-green-band" />
-
-        <div className="hero-inner">
-          {/* LEFT */}
-          <div className="animate-fade-up">
-            <div className="hero-eyebrow">
-              <span className="eyebrow-badge">{t.hero.new}</span>
-              {t.hero.badge}
-            </div>
-
-            <h1 className="hero-title">
-              {t.hero.title1}<br />
-              {t.hero.title2}<em>{t.hero.title3}</em><br />
-              <strong>{t.hero.title4}</strong>
-            </h1>
-
-            <p className="hero-desc">
-              {t.hero.desc}
-            </p>
-
-            <div className="hero-actions">
-              <button className="btn-hero-primary">
-                {t.hero.cta1}
-              </button>
-              <button className="btn-hero-secondary">
-                {t.hero.cta2}
-              </button>
-            </div>
-
-            <div className="hero-trust">
-              {[
-                { icon: "🔒", text: "JWT + BCrypt" },
-                { icon: "🐳", text: "Docker ready" },
-                { icon: "⚡", text: "< 500ms API" },
-                { icon: "📋", text: "4 rôles" },
-              ].map(t => (
-                <div key={t.text} className="trust-item">
-                  <div className="trust-icon">{t.icon}</div>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>{t.text}</span>
-                </div>
-              ))}
-            </div>
+        <div className="hero-orb" />
+        
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span>{t.hero.badge}</span>
+            <span className="badge-new">{t.hero.new}</span>
           </div>
 
-          {/* RIGHT — Dashboard */}
-          <div style={{ position: "relative" }} className="animate-fade-up delay-300">
+          <h1 className="hero-title text-balance">
+            {t.hero.title1}<br />
+            {t.hero.title2}<span className="highlight">{t.hero.title3}</span><br />
+            {t.hero.title4}
+          </h1>
+
+          <p className="hero-desc text-pretty">
+            {t.hero.desc}
+          </p>
+
+          <div className="hero-actions">
+            <button className="btn-hero-primary">
+              {t.hero.cta1}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className="btn-hero-secondary">
+              <span className="play-icon" />
+              {t.hero.cta2}
+            </button>
+          </div>
+        </div>
+
+        <div className="dashboard-preview">
+          <div style={{ position: 'relative' }}>
             <div className="dashboard-card">
               <div className="dashboard-topbar">
                 <div className="win-btn" style={{ background: "#EF4444" }} />
                 <div className="win-btn" style={{ background: "#F59E0B" }} />
                 <div className="win-btn" style={{ background: "#22C55E" }} />
-                <span style={{ marginLeft: 8, fontSize: 12, color: "var(--gray-400)", fontFamily: "var(--font-mono)" }}>
+                <span style={{ marginLeft: 12, fontSize: 12, color: "var(--muted-foreground)", fontFamily: "var(--font-mono)" }}>
                   projAI — Dashboard
                 </span>
               </div>
               <div className="dashboard-body">
                 <div className="dash-header">
-                  <div className="dash-title">Sprint 2 · Semaine 3</div>
+                  <div className="dash-title">Sprint 2 - Semaine 3</div>
                   <div className="dash-sprint">ACTIF</div>
                 </div>
 
-                <div className="dash-stats">
-                  {[
-                    { v: "24", l: "TICKETS" },
-                    { v: "17", l: "DONE" },
-                    { v: "3", l: "RISQUES" },
-                  ].map(s => (
-                    <div key={s.l} className="dash-stat">
-                      <div className="dash-stat-val">{s.v}</div>
-                      <div className="dash-stat-lbl">{s.l}</div>
-                    </div>
-                  ))}
-                </div>
+                {[
+                  { v: "24", l: "TICKETS" },
+                  { v: "17", l: "COMPLETED" },
+                  { v: "3", l: "RISKS" },
+                ].map(s => (
+                  <div key={s.l} className="dash-stat">
+                    <div className="dash-stat-val">{s.v}</div>
+                    <div className="dash-stat-lbl">{s.l}</div>
+                  </div>
+                ))}
 
-                <div style={{ fontSize: 10, color: "var(--gray-400)", fontFamily: "var(--font-mono)", marginBottom: 8, fontWeight: 600 }}>
-                  KANBAN — Sprint actif
-                </div>
-                <div className="kanban-mini">
+                <div className="kanban-preview">
                   {[
-                    { label: "TO DO", bg: "var(--gray-50)", border: "var(--gray-200)", labelColor: "var(--gray-400)", items: ["CDC Form", "Auth UI"] },
-                    { label: "IN PROGRESS", bg: "#F5F3FF", border: "#E9D5FF", labelColor: "var(--purple)", items: ["Gemini API", "Kanban"] },
-                    { label: "DONE", bg: "var(--green-pale)", border: "var(--green-muted)", labelColor: "var(--green)", items: ["JWT setup", "DB schema"] },
+                    { label: "TO DO", bg: "var(--muted)", border: "var(--border)", labelColor: "var(--muted-foreground)", items: ["CDC Form", "Auth UI"] },
+                    { label: "IN PROGRESS", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)", labelColor: "var(--accent-violet)", items: ["Gemini API", "Kanban"] },
+                    { label: "DONE", bg: "var(--primary-pale)", border: "var(--primary-muted)", labelColor: "var(--primary)", items: ["JWT setup", "DB schema"] },
                   ].map(col => (
-                    <div key={col.label} className="kanban-col-mini" style={{ background: col.bg, border: `1px solid ${col.border}` }}>
+                    <div key={col.label} className="kanban-col" style={{ background: col.bg, border: `1px solid ${col.border}` }}>
                       <div className="kanban-col-label" style={{ color: col.labelColor }}>{col.label}</div>
                       {col.items.map(item => (
-                        <div key={item} className="kanban-ticket-mini">{item}</div>
+                        <div key={item} className="kanban-ticket">{item}</div>
                       ))}
                     </div>
                   ))}
                 </div>
 
-                <div className="ai-result-bar">
-                  <div className="ai-icon">✦</div>
-                  <div>
-                    <div className="ai-label">Analyse IA terminée</div>
-                    <div className="ai-sub">14 tâches · Complexité Moyenne · 3 risques</div>
+                <div className="ai-bar">
+                  <div className="ai-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
                   </div>
-                  <button className="ai-confirm">✓ Confirmé</button>
+                  <div className="ai-text">
+                    <div className="ai-label">Analyse IA terminee</div>
+                    <div className="ai-sub">14 taches - Complexite Moyenne - 3 risques</div>
+                  </div>
+                  <button className="ai-confirm">Confirmer</button>
                 </div>
               </div>
             </div>
 
-            {/* Floating badges */}
-            <div className="float-badge animate-float" style={{ top: -18, right: -18, color: "var(--green)", borderColor: "var(--green-muted)", background: "var(--green-pale)" }}>
-              <span>✦</span> Gemini AI actif
+            <div className="floating-badge top-right">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              Gemini AI actif
             </div>
-            <div className="float-badge" style={{ bottom: -18, left: -18, animationDelay: "1.5s", animation: "float 5s ease-in-out 1.5s infinite" }}>
-              🐳 <span style={{ fontFamily: "var(--font-mono)", fontSize: 11 }}>docker-compose up</span>
+            <div className="floating-badge bottom-left">
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>docker-compose up</span>
             </div>
           </div>
         </div>
