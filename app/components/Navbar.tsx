@@ -21,24 +21,112 @@ export default function Navbar() {
           position: fixed;
           top: 0; left: 0; right: 0;
           z-index: 100;
-          height: 72px;
+          height: 80px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 32px;
+          padding: 0 40px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        /* Default state - transparent on dark hero */
+        .navbar .nav-logo,
+        .navbar .nav-link,
+        .navbar .btn-nav-ghost {
+          color: rgba(255,255,255,0.9);
+        }
+        
+        .navbar .nav-center {
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .navbar .nav-link:hover {
+          color: var(--white);
+          background: rgba(255,255,255,0.1);
+        }
+        
+        .navbar .nav-link.active {
+          color: var(--white);
+          background: rgba(255,255,255,0.15);
+        }
+        
+        .navbar .status-indicator {
+          background: rgba(34,197,94,0.15);
+          border-color: rgba(34,197,94,0.3);
+          color: var(--green-light);
+        }
+        
+        .navbar .btn-nav-primary {
+          background: var(--green);
+          box-shadow: 0 4px 20px rgba(34,197,94,0.3);
+        }
+        
+        .navbar .menu-icon,
+        .navbar .menu-icon::before,
+        .navbar .menu-icon::after {
+          background: var(--white);
+        }
+        
+        /* Scrolled state - white background */
         .navbar.scrolled {
-          background: rgba(255,255,255,0.85);
+          background: rgba(255,255,255,0.95);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           border-bottom: 1px solid var(--border);
+          box-shadow: var(--shadow-md);
+          height: 72px;
+        }
+        
+        .navbar.scrolled .nav-logo,
+        .navbar.scrolled .btn-nav-ghost {
+          color: var(--foreground);
+        }
+        
+        .navbar.scrolled .nav-center {
+          background: var(--muted);
+          border-color: transparent;
+        }
+        
+        .navbar.scrolled .nav-link {
+          color: var(--muted-foreground);
+        }
+        
+        .navbar.scrolled .nav-link:hover {
+          color: var(--foreground);
+          background: var(--white);
           box-shadow: var(--shadow-sm);
         }
         
+        .navbar.scrolled .nav-link.active {
+          color: var(--foreground);
+          background: var(--white);
+          box-shadow: var(--shadow-sm);
+        }
+        
+        .navbar.scrolled .status-indicator {
+          background: var(--primary-pale);
+          border-color: var(--primary-muted);
+          color: var(--primary);
+        }
+        
+        .navbar.scrolled .btn-nav-primary {
+          background: var(--foreground);
+          box-shadow: none;
+        }
+        
+        .navbar.scrolled .btn-nav-primary:hover {
+          background: var(--gray-800);
+        }
+        
+        .navbar.scrolled .menu-icon,
+        .navbar.scrolled .menu-icon::before,
+        .navbar.scrolled .menu-icon::after {
+          background: var(--foreground);
+        }
+        
         .nav-inner {
-          max-width: 1280px;
+          max-width: 1320px;
           width: 100%;
           margin: 0 auto;
           display: flex;
@@ -51,57 +139,45 @@ export default function Navbar() {
           align-items: center;
           gap: 12px;
           font-family: var(--font-sans);
-          font-size: 20px;
+          font-size: 22px;
           font-weight: 700;
-          color: var(--foreground);
           letter-spacing: -0.5px;
+          transition: color 0.3s ease;
         }
         
         .nav-logo-mark {
-          width: 36px; 
-          height: 36px;
-          background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+          width: 40px; 
+          height: 40px;
+          background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
           border-radius: var(--radius-lg);
           display: flex; 
           align-items: center; 
           justify-content: center;
           color: var(--white);
-          font-size: 16px;
+          font-size: 18px;
           font-family: var(--font-mono);
-          font-weight: 600;
-          box-shadow: 0 4px 12px rgba(22,163,74,0.25);
+          font-weight: 700;
+          box-shadow: 0 4px 16px rgba(34,197,94,0.3);
         }
         
         .nav-center {
           display: flex;
           align-items: center;
           gap: 4px;
-          padding: 4px;
-          background: var(--muted);
+          padding: 5px;
           border-radius: var(--radius-full);
+          transition: all 0.3s ease;
         }
         
         .nav-link {
           font-size: 14px;
           font-weight: 500;
-          color: var(--muted-foreground);
-          padding: 8px 16px;
+          padding: 10px 18px;
           border-radius: var(--radius-full);
           transition: all 0.2s ease;
           border: none;
           background: transparent;
-        }
-        
-        .nav-link:hover {
-          color: var(--foreground);
-          background: var(--white);
-          box-shadow: var(--shadow-sm);
-        }
-        
-        .nav-link.active {
-          color: var(--foreground);
-          background: var(--white);
-          box-shadow: var(--shadow-sm);
+          cursor: pointer;
         }
         
         .nav-actions {
@@ -114,35 +190,38 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 6px 12px;
-          background: var(--primary-pale);
-          border: 1px solid var(--primary-muted);
+          padding: 8px 14px;
+          border: 1px solid;
           border-radius: var(--radius-full);
           font-size: 12px;
-          font-weight: 500;
-          color: var(--primary);
+          font-weight: 600;
+          transition: all 0.3s ease;
         }
         
         .status-dot {
-          width: 6px; 
-          height: 6px;
+          width: 8px; 
+          height: 8px;
           border-radius: 50%;
-          background: var(--primary);
-          animation: pulse-ring 2s ease-in-out infinite;
+          background: currentColor;
+          animation: pulse-green 2s ease-in-out infinite;
         }
         
         .btn-nav-ghost {
           font-size: 14px;
           font-weight: 500;
-          color: var(--foreground);
           background: transparent;
           border: none;
-          padding: 8px 16px;
+          padding: 10px 18px;
           border-radius: var(--radius-md);
           transition: all 0.2s ease;
+          cursor: pointer;
         }
         
         .btn-nav-ghost:hover {
+          background: rgba(255,255,255,0.1);
+        }
+        
+        .navbar.scrolled .btn-nav-ghost:hover {
           background: var(--muted);
         }
         
@@ -150,20 +229,18 @@ export default function Navbar() {
           font-size: 14px;
           font-weight: 600;
           color: var(--white);
-          background: var(--foreground);
           border: none;
-          border-radius: var(--radius-md);
-          padding: 10px 20px;
-          transition: all 0.2s ease;
+          border-radius: var(--radius-lg);
+          padding: 12px 24px;
+          transition: all 0.3s ease;
           display: flex;
           align-items: center;
           gap: 8px;
+          cursor: pointer;
         }
         
         .btn-nav-primary:hover {
-          background: var(--gray-800);
-          transform: translateY(-1px);
-          box-shadow: var(--shadow-md);
+          transform: translateY(-2px);
         }
 
         /* Mobile menu button */
@@ -178,7 +255,6 @@ export default function Navbar() {
         .menu-icon {
           width: 24px;
           height: 2px;
-          background: var(--foreground);
           position: relative;
           transition: all 0.3s ease;
         }
@@ -189,7 +265,6 @@ export default function Navbar() {
           position: absolute;
           width: 24px;
           height: 2px;
-          background: var(--foreground);
           transition: all 0.3s ease;
         }
         

@@ -1,21 +1,26 @@
 import Navbar from "./components/Navbar";
+import HeroCTA from "./components/HeroCTA";
 import HeroSection from "./components/HeroSection";
-import StatsBar from "./components/StatsBar";
+import RolesSection from "./components/RolesSection";
 import FeaturesSection from "./components/FeaturesSection";
-import WorkflowSection from "./components/WorkflowSection";
+import ModulesShowcase from "./components/ModulesShowcase";
+import AIProcessSection from "./components/AIProcessSection";
+import TechStackSection from "./components/TechStackSection";
 import TestimonialsSection from "./components/TestimonialsSection";
-import { CTASection, Footer } from "./components/CTAAndFooter";
+import { Footer } from "./components/CTAAndFooter";
 
 export default function HomePage() {
   return (
     <main>
       <Navbar />
+      <HeroCTA />
       <HeroSection />
-      <StatsBar />
+      <RolesSection />
       <FeaturesSection />
-      <WorkflowSection />
+      <AIProcessSection />
+      <ModulesShowcase />
+      <TechStackSection />
       <TestimonialsSection />
-      <CTASection />
       <Footer />
     </main>
   );
