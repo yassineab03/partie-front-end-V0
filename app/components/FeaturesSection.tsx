@@ -199,8 +199,8 @@ export default function FeaturesSection() {
         }
         
         .feature-card.highlighted .feature-tag {
-          background: rgba(13,148,136,0.2);
-          color: var(--primary-light);
+          background: rgba(22,163,74,0.2);
+          color: var(--green-light);
         }
         
         .feature-title {
@@ -261,8 +261,8 @@ export default function FeaturesSection() {
         }
         
         .feature-card.highlighted .feature-item-check {
-          background: rgba(13,148,136,0.2);
-          color: var(--primary-light);
+          background: rgba(22,163,74,0.2);
+          color: var(--green-light);
         }
         
         .feature-footer {
@@ -293,7 +293,7 @@ export default function FeaturesSection() {
         }
         
         .feature-card.highlighted .feature-stat-val {
-          color: var(--primary-light);
+          color: var(--green-light);
         }
         
         .feature-stat-lbl {

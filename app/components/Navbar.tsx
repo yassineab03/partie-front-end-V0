@@ -69,7 +69,7 @@ export default function Navbar() {
           font-size: 16px;
           font-family: var(--font-mono);
           font-weight: 600;
-          box-shadow: 0 4px 12px rgba(13,148,136,0.25);
+          box-shadow: 0 4px 12px rgba(22,163,74,0.25);
         }
         
         .nav-center {

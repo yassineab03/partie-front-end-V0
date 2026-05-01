@@ -42,7 +42,7 @@ export function CTASection() {
           transform: translate(-50%, -50%);
           width: 800px;
           height: 400px;
-          background: radial-gradient(ellipse, rgba(13,148,136,0.15) 0%, transparent 60%);
+          background: radial-gradient(ellipse, rgba(22,163,74,0.15) 0%, transparent 60%);
           pointer-events: none;
         }
         
@@ -63,9 +63,9 @@ export function CTASection() {
           font-weight: 600;
           letter-spacing: 2px;
           text-transform: uppercase;
-          color: var(--primary-light);
-          background: rgba(13,148,136,0.1);
-          border: 1px solid rgba(13,148,136,0.2);
+          color: var(--green-light);
+          background: rgba(22,163,74,0.1);
+          border: 1px solid rgba(22,163,74,0.2);
           border-radius: var(--radius-full);
           padding: 8px 20px;
           margin-bottom: 40px;
@@ -82,7 +82,7 @@ export function CTASection() {
         }
         
         .cta-title .highlight {
-          color: var(--primary-light);
+          color: var(--green-light);
         }
         
         .cta-desc {
@@ -120,7 +120,7 @@ export function CTASection() {
         .btn-cta-primary:hover {
           background: var(--primary-light);
           transform: translateY(-2px);
-          box-shadow: 0 16px 48px rgba(13,148,136,0.35);
+          box-shadow: 0 16px 48px rgba(22,163,74,0.35);
         }
         
         .btn-cta-ghost {
@@ -318,7 +318,7 @@ export function Footer() {
             <div>
               <div className="footer-brand">
                 <div className="footer-logo">P</div>
-                <span>Proj<span style={{ color: 'var(--primary-light)' }}>AI</span></span>
+                <span>Proj<span style={{ color: 'var(--green-light)' }}>AI</span></span>
               </div>
               <p className="footer-tagline">
                 {t.footer.tagline}

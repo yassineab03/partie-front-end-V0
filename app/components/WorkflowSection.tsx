@@ -84,7 +84,7 @@ export default function WorkflowSection() {
           background: var(--primary);
           border-color: var(--primary);
           color: white;
-          box-shadow: 0 12px 40px rgba(13,148,136,0.3);
+          box-shadow: 0 12px 40px rgba(22,163,74,0.3);
         }
         
         .workflow-step:hover .step-icon-wrap {
@@ -172,19 +172,19 @@ export default function WorkflowSection() {
         }
         
         .t-prompt { 
-          color: var(--primary-light); 
+          color: var(--green-light); 
           user-select: none; 
         }
         
         .t-cmd { color: #E2E8F0; }
-        .t-success { color: var(--primary-light); }
+        .t-success { color: var(--green-light); }
         .t-info { color: var(--gray-500); }
         
         .t-cursor {
           display: inline-block;
           width: 8px; 
           height: 16px;
-          background: var(--primary-light);
+          background: var(--green-light);
           animation: blink 1s step-end infinite;
           vertical-align: middle;
           border-radius: 1px;

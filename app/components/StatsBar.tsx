@@ -117,7 +117,7 @@ export default function StatsBar() {
         
         .stat-suffix {
           font-size: 32px;
-          color: var(--primary-light);
+          color: var(--green-light);
           font-weight: 700;
         }
         

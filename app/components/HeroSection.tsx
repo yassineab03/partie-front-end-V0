@@ -312,7 +312,7 @@ export default function HeroSection() {
         
         .ai-bar {
           grid-column: 1 / -1;
-          background: linear-gradient(135deg, var(--primary-pale), rgba(13,148,136,0.08));
+          background: linear-gradient(135deg, var(--primary-pale), rgba(22,163,74,0.08));
           border: 1px solid var(--primary-muted);
           border-radius: var(--radius-lg);
           padding: 14px 18px;
